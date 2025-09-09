@@ -10,7 +10,7 @@ export default function Navbar() {
           <Link href={'/'}>Home</Link>  
         </li>
         <li>
-          <Link href={'/about'}>Abouut</Link>  
+          <Link href={'/about'}>About</Link>  
         </li>
         <li>
           <Link href={'/services'}>Services</Link>  
@@ -55,7 +55,7 @@ export default function Navbar() {
             </ul>
           </div>
           <Link href={'/'} className="text-xl">
-            <Image src={'/assets/logo.svg'} height={87} width={107}></Image>
+            <Image src={'/assets/logo.svg'} height={87} width={107} alt="logo"></Image>
           </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
