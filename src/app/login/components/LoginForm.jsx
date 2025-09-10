@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-// import { signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { FaGithub } from "react-icons/fa6";
 import { FaGoogle } from "react-icons/fa";
 import Link from "next/link";
@@ -9,7 +9,9 @@ import Link from "next/link";
 import SocialLogin from "./SocialLogin";
 
 export default function LoginForm() {
-//   const router = useRouter();
+
+  // const router = useRouter();
+
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
 //     const form = e.target;
@@ -36,8 +38,25 @@ export default function LoginForm() {
 //       toast.error("FAILED to Log In");
 //     }
 //   };
-  return (
-    <form className="w-full max-w-lg space-y-8">
+  const handleSubmit = async(e) => {
+    e.preventDefault(); 
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    try {
+      await signIn("credentials", {email,password, callbackUrl: "/"});
+      alert("Logged in successfully");  
+      // console.log({ email, password });
+      // router.push("/");
+      form.reset();
+    } catch (error) {
+      console.log(error);
+      alert("Failed to log in");
+    }
+
+  }
+return (
+    <form onSubmit={handleSubmit} className="w-full max-w-lg space-y-8">
       <label className="form-control w-full">
         <div className="label w-full">
           <span className="label-text  font-bold">Email</span>
