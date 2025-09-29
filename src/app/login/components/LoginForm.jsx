@@ -4,58 +4,81 @@ import { signIn } from "next-auth/react";
 import { FaGithub } from "react-icons/fa6";
 import { FaGoogle } from "react-icons/fa";
 import Link from "next/link";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 // import toast from "react-hot-toast";
 import SocialLogin from "./SocialLogin";
+import toast from "react-hot-toast";
 
 export default function LoginForm() {
+  const router = useRouter();
 
-  // const router = useRouter();
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     const form = e.target;
-//     const email = form.email.value;
-//     const password = form.password.value;
-//     toast("Submitting ....");
-//     try {
-//       const response = await signIn("credentials", {
-//         email,
-//         password,
-//         callbackUrl: "/",
-//         redirect: false,
-//       });
-//       if (response.ok) {
-//         toast.success("Logged In successfully");
-//         router.push("/");
-//         form.reset();
-//       } else {
-//         toast.error("FAILED to Log In");
-//       }
-//       //console.log({ email, password });
-//     } catch (error) {
-//       console.log(error);
-//       toast.error("FAILED to Log In");
-//     }
-//   };
-  const handleSubmit = async(e) => {
-    e.preventDefault(); 
+  //   const handleSubmit = async (e) => {
+  //     e.preventDefault();
+  //     const form = e.target;
+  //     const email = form.email.value;
+  //     const password = form.password.value;
+  //     toast("Submitting ....");
+  //     try {
+  //       const response = await signIn("credentials", {
+  //         email,
+  //         password,
+  //         callbackUrl: "/",
+  //         redirect: false,
+  //       });
+  //       if (response.ok) {
+  //         toast.success("Logged In successfully");
+  //         router.push("/");
+  //         form.reset();
+  //       } else {
+  //         toast.error("FAILED to Log In");
+  //       }
+  //       //console.log({ email, password });
+  //     } catch (error) {
+  //       console.log(error);
+  //       toast.error("FAILED to Log In");
+  //     }
+  //   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
-    try {
-      await signIn("credentials", {email,password, callbackUrl: "/"});
-      alert("Logged in successfully");  
-      // console.log({ email, password });
-      // router.push("/");
-      form.reset();
-    } catch (error) {
-      console.log(error);
-      alert("Failed to log in");
+
+    // Basic form validation
+    if (!email || !password) {
+      alert("Please fill in all fields");
+      return;
     }
 
-  }
-return (
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert("Please enter a valid email address");
+      return;
+    }
+    toast("Submitting ....");
+    try {
+      const response = await signIn("credentials", {
+        email,
+        password,
+        callbackUrl: "/",
+        redirect: false,
+      });
+
+      if (response?.ok) {
+        
+        toast.success("Logged In successfully");
+        router.push("/");
+        form.reset();
+      } else {
+        toast.error("FAILED to Log In");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+     toast.error("FAILED to Log In");
+    }
+  };
+  return (
     <form onSubmit={handleSubmit} className="w-full max-w-lg space-y-8">
       <label className="form-control w-full">
         <div className="label w-full">
